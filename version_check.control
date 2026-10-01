@@ -1,0 +1,5 @@
+# version_check extension
+comment = 'Version-specific helper functions. Each build targets exactly one PostgreSQL major version.'
+default_version = '1.0'
+module_pathname = '$libdir/version_check'
+relocatable = true

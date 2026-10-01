@@ -18,11 +18,11 @@
  * PostgreSQL 13 only. PG_VERSION_NUM for PostgreSQL 13.x is 130000..130999.
  */
 #ifdef PG_VERSION_NUM
-#if PG_VERSION_NUM < 140000 || PG_VERSION_NUM >= 150000
-#error "This extension requires PostgreSQL version 14"
+#if PG_VERSION_NUM < 150000 || PG_VERSION_NUM >= 160000
+#error "This extension requires PostgreSQL version 15"
 #endif
 #else
-#error "This extension requires PostgreSQL version 14"
+#error "This extension requires PostgreSQL version 15"
 #endif
 
 PG_MODULE_MAGIC;
@@ -61,6 +61,26 @@ Datum
 getversion14(PG_FUNCTION_ARGS)
 {
 #if PG_VERSION_NUM >= 140000 && PG_VERSION_NUM < 150000
+	PG_RETURN_BOOL(true);
+#else
+	PG_RETURN_BOOL(false);
+#endif
+}
+
+PG_FUNCTION_INFO_V1(getversion15);
+
+/*
+ * getversion15
+ *
+ * Returns true when the server major version is 15.
+ * Because of the compile-time guard above, this function can only ever
+ * be built against PostgreSQL 15, so in practice it always returns true.
+ * The runtime check is kept as a defensive measure.
+ */
+Datum
+getversion15(PG_FUNCTION_ARGS)
+{
+#if PG_VERSION_NUM >= 150000 && PG_VERSION_NUM < 160000
 	PG_RETURN_BOOL(true);
 #else
 	PG_RETURN_BOOL(false);

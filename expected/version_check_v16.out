@@ -5,7 +5,7 @@ CREATE EXTENSION version_check;
 SELECT getversion16();
  getversion16 
 --------------
- t
+ f
 (1 row)
 
 -- Cross-check against the server's own version number: both expressions
@@ -22,7 +22,7 @@ SELECT getversion16() = (current_setting('server_version_num')::int / 10000 = 16
 SELECT getversion16(), getversion16(), getversion16();
  getversion16 | getversion16 | getversion16 
 --------------+--------------+--------------
- t            | t            | t
+ f            | f            | f
 (1 row)
 
 -- Confirm the function metadata exposed by the catalog.

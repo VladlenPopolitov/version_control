@@ -7,12 +7,12 @@ The extension name is always `version_check`, and the C source file is always
 *content* of `version_check.c`: its compile-time guard and the set of exported
 functions.
 
-## Current build: PostgreSQL 16
+## Current build: PostgreSQL 17
 
 This build provides a single SQL function:
 
 ```sql
-getversion16() RETURNS boolean
+getversion17() RETURNS boolean
 ```
 
 It returns true when the running PostgreSQL major version is 14, and
@@ -20,24 +20,24 @@ false otherwise.
 
 ## Compile-time version guard
 
-If you try to build this source against any PostgreSQL version other than 16,
+If you try to build this source against any PostgreSQL version other than 17,
 the compiler aborts with:
 
-This extension requires PostgreSQL version 16
+This extension requires PostgreSQL version 17
 Therefore, in practice, whenever this build is compiled and loaded
-successfully, getversion16() always returns true.
+successfully, getversion17() always returns true.
 
 ## Requirements
 
-PostgreSQL 16 only (any minor release of the 16.x series) for this build.
-PostgreSQL server development headers (postgresql-server-dev-16).
+PostgreSQL 17 only (any minor release of the 17.x series) for this build.
+PostgreSQL server development headers (postgresql-server-dev-17).
 A C compiler and make.
 
 PGXS build infrastructure (usually shipped with the server dev package).
-⚠️ This build works only with PostgreSQL 16.
+⚠️ This build works only with PostgreSQL 17.
 
 Building it against any other major version will fail at compile time
-with the error This extension requires PostgreSQL version 16.
+with the error This extension requires PostgreSQL version 17.
 
 Future major versions will ship their own copy of version_check.c
 with their own functions and their own #error guard, while keeping
@@ -51,13 +51,13 @@ sudo make install
 
 ## Usage
 
-Connect to a PostgreSQL 16 database and run:
+Connect to a PostgreSQL 17 database and run:
 
 ```sql
 CREATE EXTENSION version_check;
 
-SELECT getversion16();
---  getversion16
+SELECT getversion17();
+--  getversion17
 -- --------------
 --  t
 ```
@@ -75,7 +75,7 @@ The extension ships with a PGXS-based regression test suite.
 Test input: sql/version_check.sql
 Expected output: expected/version_check.out
 Driver: make installcheck
-Run the tests against a running PostgreSQL 16 instance:
+Run the tests against a running PostgreSQL 17 instance:
 
 ```sh
 make installcheck
@@ -84,9 +84,9 @@ make installcheck
 The test script does the following:
 
 Creates the extension with CREATE EXTENSION version_check;.
-Calls getversion16() and asserts the result is t.
+Calls getversion17() and asserts the result is t.
 Cross-checks the function result against
-current_setting('server_version_num')::int / 10000 = 16.
+current_setting('server_version_num')::int / 10000 = 17.
 Calls the function several times in one statement to confirm stability.
 Inspects pg_proc to confirm the function is boolean, IMMUTABLE,
 STRICT, and PARALLEL SAFE.
@@ -97,8 +97,8 @@ results/version_check.out and expected/version_check.out.
 
 ## Files
 
-version_check.c — PostgreSQL 16 implementation with the
-getversion16() function and the compile-time version guard.
+version_check.c — PostgreSQL 17 implementation with the
+getversion17() function and the compile-time version guard.
 version_check--1.0.sql — SQL script that declares the function.
 version_check.control — extension control file.
 Makefile — PGXS build script, including the REGRESS target.
@@ -108,7 +108,7 @@ Adding support for a new PostgreSQL major version
 
 Take the current version_check.c and update the #error guard to the
 new version range (e.g. for version 14:
-PG_VERSION_NUM < 140000 || PG_VERSION_NUM >= 160000) and the error text
+PG_VERSION_NUM < 140000 || PG_VERSION_NUM >= 170000) and the error text
 accordingly.
 Replace the exported function(s) with the ones appropriate for that
 version (e.g. getversion14()), keeping the V1 calling convention.

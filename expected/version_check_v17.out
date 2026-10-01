@@ -1,0 +1,50 @@
+-- Regression tests for the version_check extension (PostgreSQL 17 build).
+-- Expected output is captured in expected/version_check.out.
+CREATE EXTENSION version_check;
+-- Basic call: should return true on PostgreSQL 17.
+SELECT getversion17();
+ getversion17 
+--------------
+ t
+(1 row)
+
+-- Cross-check against the server's own version number: both expressions
+-- must agree, i.e. the function result must equal the result of comparing
+-- the major version reported by the server with 17.
+SELECT getversion17() = (current_setting('server_version_num')::int / 10000 = 17) AS matches;
+ matches 
+---------
+ t
+(1 row)
+
+-- The function is declared IMMUTABLE and STRICT, so calling it repeatedly
+-- must give the same result.
+SELECT getversion17(), getversion17(), getversion17();
+ getversion17 | getversion17 | getversion17 
+--------------+--------------+--------------
+ t            | t            | t
+(1 row)
+
+-- Confirm the function metadata exposed by the catalog.
+SELECT proname,
+       prorettype::regtype,
+       provolatile,
+       proisstrict,
+       proparallel
+FROM pg_proc
+WHERE proname = 'getversion17';
+   proname    | prorettype | provolatile | proisstrict | proparallel 
+--------------+------------+-------------+-------------+-------------
+ getversion17 | boolean    | i           | t           | s
+(1 row)
+
+-- Confirm the extension is registered and owns the function.
+SELECT extname
+FROM pg_extension
+WHERE extname = 'version_check';
+    extname    
+---------------
+ version_check
+(1 row)
+
+DROP EXTENSION version_check;

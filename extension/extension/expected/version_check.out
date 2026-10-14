@@ -5,7 +5,11 @@ CREATE EXTENSION version_check;
 SELECT getversion13();
  getversion13 
 --------------
+<<<<<<< HEAD
  t
+=======
+ f
+>>>>>>> e264ddc (add subdir with extension)
 (1 row)
 
 -- Cross-check against the server's own version number: both expressions
@@ -22,7 +26,11 @@ SELECT getversion13() = (current_setting('server_version_num')::int / 10000 = 13
 SELECT getversion13(), getversion13(), getversion13();
  getversion13 | getversion13 | getversion13 
 --------------+--------------+--------------
+<<<<<<< HEAD
  t            | t            | t
+=======
+ f            | f            | f
+>>>>>>> e264ddc (add subdir with extension)
 (1 row)
 
 -- Confirm the function metadata exposed by the catalog.

@@ -7,15 +7,15 @@ The extension name is always `version_check`, and the C source file is always
 *content* of `version_check.c`: its compile-time guard and the set of exported
 functions.
 
-## Current build: PostgreSQL 13
+## Current build: PostgreSQL 14
 
 This build provides a single SQL function:
 
 ```sql
-getversion13() RETURNS boolean
+getversion14() RETURNS boolean
 ```
 
-It returns true when the running PostgreSQL major version is 13, and
+It returns true when the running PostgreSQL major version is 14, and
 false otherwise.
 
 ## Compile-time version guard
